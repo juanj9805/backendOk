@@ -1,18 +1,19 @@
-﻿using System;
+﻿using ProfeTours.Server.Models;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProfeTours.Server.Models
 {
-    public partial class Tipodocumento
+    public class Tipodocumento
     {
-        public Tipodocumento()
-        {
-            Usuarios = new HashSet<Usuario>();
-        }
 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdTipoDocumento { get; set; }
-        public string? TipoDocumento1 { get; set; }
-
-        public virtual ICollection<Usuario> Usuarios { get; set; }
+        public string TipoDocumentoNombre { get; set; }
     }
+
+
 }

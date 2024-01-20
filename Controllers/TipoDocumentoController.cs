@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProfeTours.Server.Models;
 
 namespace ProfeTours.Server.Controllers
@@ -26,7 +27,7 @@ namespace ProfeTours.Server.Controllers
 
                 // Puedes realizar validaciones adicionales antes de guardar el usuario, si es necesario
 
-                _sENAContext.Tipodocumentos.Add(nuevoDocumento);
+                _sENAContext.TipoDocumentos.Add(nuevoDocumento);
                 await _sENAContext.SaveChangesAsync();
 
                 return StatusCode(StatusCodes.Status201Created, "Usuario creado exitosamente");
@@ -35,6 +36,22 @@ namespace ProfeTours.Server.Controllers
             {
                 // Manejo de errores, puedes personalizar según tus necesidades
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error al guardar el usuario: {ex.Message}");
+            }
+        }
+
+        [HttpGet]
+        [Route("ObtenerTiposDocumentos")]
+        public IActionResult ObtenerTiposDocumentos()
+        {
+            try
+            {
+                var tiposDocumentos = _sENAContext.TipoDocumentos.ToList();
+                return Ok(tiposDocumentos);
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores, puedes personalizar según tus necesidades
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al obtener los tipos de documentos: {ex.Message}");
             }
         }
     }

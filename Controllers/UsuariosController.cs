@@ -53,8 +53,8 @@ namespace ProfeTours.Server.Controllers
             var usuarioResponse = new
             {
                 usuario.IdUsuario,
-                usuario.Nombres,
-                usuario.Apellidos,
+                usuario.Nombre,
+                usuario.Apellido,
                 usuario.Correo,
                 // Otros campos que quieras devolver
             };
