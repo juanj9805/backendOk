@@ -69,6 +69,79 @@ namespace ProfeTours.Server.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("EliminarCliente/{id}")]
+        public async Task<IActionResult> EliminarCliente(int id)
+        {
+            try
+            {
+                // Buscar el cliente por su ID
+                var clienteAEliminar = await _sENAContext.Clientes.FindAsync(id);
+
+                // Verificar si el cliente existe
+                if (clienteAEliminar == null)
+                {
+                    return NotFound($"No se encontró un cliente con ID {id}");
+                }
+
+                // Eliminar el cliente
+                _sENAContext.Clientes.Remove(clienteAEliminar);
+                await _sENAContext.SaveChangesAsync();
+
+                return Ok($"Cliente con ID {id} eliminado exitosamente");
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores, puedes personalizar según tus necesidades
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al eliminar el cliente: {ex.Message}");
+            }
+        }
+
+        [HttpPut]
+        [Route("ActualizarCliente")]
+        public async Task<IActionResult> ActualizarCliente([FromBody] ActualizarClienteViewModel clienteActualizadoViewModel)
+        {
+            try
+            {
+                if (clienteActualizadoViewModel == null)
+                {
+                    return BadRequest("Los datos del cliente actualizado no pueden ser nulos");
+                }
+
+                // Buscar el cliente por su ID
+                var clienteAActualizar = await _sENAContext.Clientes.FindAsync(clienteActualizadoViewModel.Id);
+
+                // Verificar si el cliente existe
+                if (clienteAActualizar == null)
+                {
+                    return NotFound($"No se encontró un cliente con ID {clienteActualizadoViewModel.Id}");
+                }
+
+                // Actualizar las propiedades del cliente con los nuevos valores
+                clienteAActualizar.IdTipoDocumento = clienteActualizadoViewModel.IdTipoDocumento;
+                clienteAActualizar.NombreCompleto = clienteActualizadoViewModel.NombreCompleto;
+                clienteAActualizar.DireccionDomicilio = clienteActualizadoViewModel.DireccionDomicilio;
+                clienteAActualizar.NumeroTelefono = clienteActualizadoViewModel.NumeroTelefono;
+                clienteAActualizar.CorreoElectronico = clienteActualizadoViewModel.CorreoElectronico;
+
+                await _sENAContext.SaveChangesAsync();
+
+                return Ok($"Cliente con ID {clienteActualizadoViewModel.Id} actualizado exitosamente");
+            }
+            catch (DbUpdateException ex)
+            {
+                // Manejo de errores de base de datos, por ejemplo, violación de clave única
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al actualizar el cliente: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                // Manejo de otros errores, puedes personalizar según tus necesidades
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al actualizar el cliente: {ex.Message}");
+            }
+        }
+
+
+
     }
 
 
