@@ -48,7 +48,7 @@ namespace ProfeTours.Server.Controllers
             try
             {
                 var paquetes = _sENAContext.Paquetes
-                    .Select(p => new PaqueteViewModel
+                    .Select(p => new PaqueteViewModels
                     {
                         IdPaquete = p.IdPaquete,
                         NombrePaquete = p.NombrePaquete,
@@ -69,6 +69,64 @@ namespace ProfeTours.Server.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("EliminarPaquete/{id}")]
+        public async Task<IActionResult> EliminarPaquete(int id)
+        {
+            try
+            {
+                // Buscar el cliente por su ID
+                var paqueteEliminar = await _sENAContext.Paquetes.FindAsync(id);
 
+                // Verificar si el cliente existe
+                if (paqueteEliminar == null)
+                {
+                    return NotFound($"No se encontró un paquete con ID {id}");
+                }
+
+                // Eliminar el cliente
+                _sENAContext.Paquetes.Remove(paqueteEliminar);
+                await _sENAContext.SaveChangesAsync();
+
+                return Ok($"Paquete con ID {id} eliminado exitosamente");
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores, puedes personalizar según tus necesidades
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al eliminar el paquete: {ex.Message}");
+            }
+
+        }
+
+        [HttpPut]
+        [Route("EditarPaquete/{id}")]
+        public async Task<IActionResult> EditarPaquete(int id, [FromBody] PaqueteActualizarViewModel paqueteActualizadoViewModel)
+        {
+            try
+            {
+                var paqueteExistente = await _sENAContext.Paquetes.FindAsync(id);
+
+                if (paqueteExistente == null)
+                {
+                    return NotFound($"No se encontró un paquete con ID {id}");
+                }
+
+                paqueteExistente.NombrePaquete = paqueteActualizadoViewModel.NombrePaquete;
+                paqueteExistente.DescripcionPaquete = paqueteActualizadoViewModel.DescripcionPaquete;
+                paqueteExistente.PrecioPaquete = paqueteActualizadoViewModel.PrecioPaquete;
+                paqueteExistente.DestinoPaquete = paqueteActualizadoViewModel.DestinoPaquete;
+                paqueteExistente.FechaSalida = paqueteActualizadoViewModel.FechaSalida;
+                paqueteExistente.FechaRegreso = paqueteActualizadoViewModel.FechaRegreso;
+
+                await _sENAContext.SaveChangesAsync();
+
+                return Ok(paqueteExistente);
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores, puedes personalizar según tus necesidades
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al editar el paquete: {ex.Message}");
+            }
+        }
     }
 }

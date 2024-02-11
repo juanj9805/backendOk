@@ -61,18 +61,54 @@ namespace ProfeTours.Server.Controllers
 
             return Ok(usuarioResponse);
         }
+        //[HttpPost]
+        //[Route("GuardarUsuario")]
+        //public async Task<IActionResult> GuardarUsuario([FromBody] Usuario nuevoUsuario)
+        //{
+        //    try
+        //    {
+        //        if (nuevoUsuario == null)
+        //        {
+        //            return BadRequest("El usuario proporcionado no puede ser nulo");
+        //        }
+
+        //        // Puedes realizar validaciones adicionales antes de guardar el usuario, si es necesario
+
+        //        _sENAContext.Usuarios.Add(nuevoUsuario);
+        //        await _sENAContext.SaveChangesAsync();
+
+        //        return StatusCode(StatusCodes.Status201Created, "Usuario creado exitosamente");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Manejo de errores, puedes personalizar según tus necesidades
+        //        return StatusCode(StatusCodes.Status500InternalServerError, $"Error al guardar el usuario: {ex.Message}");
+        //    }
+        //}
+
         [HttpPost]
         [Route("GuardarUsuario")]
-        public async Task<IActionResult> GuardarUsuario([FromBody] Usuario nuevoUsuario)
+        public async Task<IActionResult> GuardarUsuario([FromBody] NuevoUsuarioViewModel nuevoUsuarioViewModel)
         {
             try
             {
-                if (nuevoUsuario == null)
+                if (nuevoUsuarioViewModel == null)
                 {
                     return BadRequest("El usuario proporcionado no puede ser nulo");
                 }
 
                 // Puedes realizar validaciones adicionales antes de guardar el usuario, si es necesario
+
+                // Mapea el ViewModel a la entidad Usuario
+                var nuevoUsuario = new Usuario
+                {
+                    IdTipoDocumento = nuevoUsuarioViewModel.IdTipoDocumento,
+                    NumeroDocumento = nuevoUsuarioViewModel.NumeroDocumento,
+                    Nombre = nuevoUsuarioViewModel.Nombres,
+                    Apellido = nuevoUsuarioViewModel.Apellidos,
+                    Correo = nuevoUsuarioViewModel.Correo,
+                    Contrasena = nuevoUsuarioViewModel.Contrasena
+                };
 
                 _sENAContext.Usuarios.Add(nuevoUsuario);
                 await _sENAContext.SaveChangesAsync();
@@ -85,6 +121,66 @@ namespace ProfeTours.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error al guardar el usuario: {ex.Message}");
             }
         }
+
+
+        [HttpDelete]
+        [Route("EliminarUsuario/{id}")]
+        public async Task<IActionResult> EliminarUsuario(int id)
+        {
+            try
+            {
+                // Buscar el cliente por su ID
+                var usuarioEliminar = await _sENAContext.Usuarios.FindAsync(id);
+
+                // Verificar si el cliente existe
+                if (usuarioEliminar == null)
+                {
+                    return NotFound($"No se encontró un cliente con ID {id}");
+                }
+
+                // Eliminar el cliente
+                _sENAContext.Usuarios.Remove(usuarioEliminar);
+                await _sENAContext.SaveChangesAsync();
+
+                return Ok($"Usuario con ID {id} eliminado exitosamente");
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores, puedes personalizar según tus necesidades
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al eliminar el usuario: {ex.Message}");
+            }
+        }
+
+        [HttpPut]
+        [Route("EditarUsuario/{id}")]
+        public async Task<IActionResult> EditarUsuario(int id, [FromBody] UsuarioViewModel usuarioActualizadoViewModel)
+        {
+            try
+            {
+                var usuarioExistente = await _sENAContext.Usuarios.FindAsync(id);
+
+                if (usuarioExistente == null)
+                {
+                    return NotFound($"No se encontró un usuario con ID {id}");
+                }
+
+                usuarioExistente.IdTipoDocumento = usuarioActualizadoViewModel.IdTipoDocumento;
+                usuarioExistente.NumeroDocumento = usuarioActualizadoViewModel.NumeroDocumento;
+                usuarioExistente.Nombre = usuarioActualizadoViewModel.Nombre;
+                usuarioExistente.Apellido = usuarioActualizadoViewModel.Apellido;
+                usuarioExistente.Correo = usuarioActualizadoViewModel.Correo;
+
+                await _sENAContext.SaveChangesAsync();
+
+                return Ok(usuarioExistente);
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores, puedes personalizar según tus necesidades
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al editar el usuario: {ex.Message}");
+            }
+        }
+
 
     }
 }
