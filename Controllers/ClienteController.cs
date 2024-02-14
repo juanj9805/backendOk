@@ -155,6 +155,7 @@ namespace ProfeTours.Server.Controllers
                 }
 
                 clienteExistente.IdTipoDocumento = clienteActualizadoViewModel.IdTipoDocumento;
+                clienteExistente.NumeroDocumento = clienteActualizadoViewModel.NumeroDocumento;
                 clienteExistente.NombreCompleto = clienteActualizadoViewModel.NombreCompleto;
                 clienteExistente.DireccionDomicilio = clienteActualizadoViewModel.DireccionDomicilio;
                 clienteExistente.NumeroTelefono = clienteActualizadoViewModel.NumeroTelefono;

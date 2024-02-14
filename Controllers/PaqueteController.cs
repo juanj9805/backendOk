@@ -51,6 +51,7 @@ namespace ProfeTours.Server.Controllers
                     .Select(p => new PaqueteViewModels
                     {
                         IdPaquete = p.IdPaquete,
+                        ImagenPaquete = p.ImagenPaquete,
                         NombrePaquete = p.NombrePaquete,
                         DescripcionPaquete = p.DescripcionPaquete,
                         PrecioPaquete = p.PrecioPaquete,
@@ -111,6 +112,8 @@ namespace ProfeTours.Server.Controllers
                     return NotFound($"No se encontró un paquete con ID {id}");
                 }
 
+
+                paqueteExistente.ImagenPaquete = paqueteActualizadoViewModel.ImagenPaquete;
                 paqueteExistente.NombrePaquete = paqueteActualizadoViewModel.NombrePaquete;
                 paqueteExistente.DescripcionPaquete = paqueteActualizadoViewModel.DescripcionPaquete;
                 paqueteExistente.PrecioPaquete = paqueteActualizadoViewModel.PrecioPaquete;

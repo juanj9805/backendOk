@@ -2,6 +2,7 @@
 {
     public class PaqueteActualizarViewModel
     {
+        public string ImagenPaquete { get; set; }
         public string NombrePaquete { get; set; }
         public string DescripcionPaquete { get; set; }
         public decimal PrecioPaquete { get; set; }
