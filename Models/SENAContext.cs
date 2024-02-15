@@ -22,13 +22,20 @@ namespace ProfeTours.Server.Models
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Paquete> Paquetes { get; set; }
         public DbSet<Venta> Ventas { get; set; }
+        public DbSet<Tiporole> Tiporoles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Usuario>() 
-                .HasOne(u => u.Tipodocumento)
+            modelBuilder.Entity<Usuario>()
+          .HasOne(u => u.Tipodocumento)
+          .WithMany()
+          .HasForeignKey(u => u.IdTipoDocumento)
+          .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Usuario>()
+                .HasOne(u => u.Tiporole)
                 .WithMany()
-                .HasForeignKey(u => u.IdTipoDocumento)
+                .HasForeignKey(u => u.IdTipoRole)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Cliente>()

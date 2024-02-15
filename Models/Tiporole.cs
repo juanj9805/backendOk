@@ -8,10 +8,7 @@ namespace ProfeTours.Server.Models
 {
     public partial class Tiporole
     {
-        public Tiporole()
-        {
-            Usuarios = new HashSet<Usuario>();
-        }
+
 
 
         [Key]
@@ -20,6 +17,5 @@ namespace ProfeTours.Server.Models
         public int IdTipoRoles { get; set; }
         public string? TipoRoles { get; set; }
 
-        public virtual ICollection<Usuario> Usuarios { get; set; }
     }
 }

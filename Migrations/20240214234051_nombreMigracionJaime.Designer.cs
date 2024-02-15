@@ -12,8 +12,8 @@ using ProfeTours.Server.Models;
 namespace ProfeTours.Server.Migrations
 {
     [DbContext(typeof(SENAContext))]
-    [Migration("20240120221730_segundaMigracion")]
-    partial class segundaMigracion
+    [Migration("20240214234051_nombreMigracionJaime")]
+    partial class nombreMigracionJaime
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,6 +46,9 @@ namespace ProfeTours.Server.Migrations
                     b.Property<string>("NombreCompleto")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumeroDocumento")
+                        .HasColumnType("int");
 
                     b.Property<string>("NumeroTelefono")
                         .IsRequired()
@@ -80,6 +83,10 @@ namespace ProfeTours.Server.Migrations
                     b.Property<DateTime>("FechaSalida")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ImagenPaquete")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NombrePaquete")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -109,6 +116,22 @@ namespace ProfeTours.Server.Migrations
                     b.ToTable("TipoDocumentos");
                 });
 
+            modelBuilder.Entity("ProfeTours.Server.Models.Tiporole", b =>
+                {
+                    b.Property<int>("IdTipoRoles")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTipoRoles"), 1L, 1);
+
+                    b.Property<string>("TipoRoles")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdTipoRoles");
+
+                    b.ToTable("Tiporoles");
+                });
+
             modelBuilder.Entity("ProfeTours.Server.Models.Usuario", b =>
                 {
                     b.Property<int>("IdUsuario")
@@ -132,6 +155,9 @@ namespace ProfeTours.Server.Migrations
                     b.Property<int>("IdTipoDocumento")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdTipoRole")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -140,11 +166,44 @@ namespace ProfeTours.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("TiporoleIdTipoRoles1")
+                        .HasColumnType("int");
+
                     b.HasKey("IdUsuario");
 
                     b.HasIndex("IdTipoDocumento");
 
+                    b.HasIndex("IdTipoRole");
+
+                    b.HasIndex("TiporoleIdTipoRoles1");
+
                     b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("ProfeTours.Server.Models.Venta", b =>
+                {
+                    b.Property<int>("IdVenta")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdVenta"), 1L, 1);
+
+                    b.Property<DateTime>("FechaCompra")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IdCliente")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdPaquete")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdVenta");
+
+                    b.HasIndex("IdCliente");
+
+                    b.HasIndex("IdPaquete");
+
+                    b.ToTable("Ventas");
                 });
 
             modelBuilder.Entity("Cliente", b =>
@@ -166,7 +225,43 @@ namespace ProfeTours.Server.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("ProfeTours.Server.Models.Tiporole", "Tiporole")
+                        .WithMany()
+                        .HasForeignKey("IdTipoRole")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ProfeTours.Server.Models.Tiporole", null)
+                        .WithMany("Usuarios")
+                        .HasForeignKey("TiporoleIdTipoRoles1");
+
                     b.Navigation("Tipodocumento");
+
+                    b.Navigation("Tiporole");
+                });
+
+            modelBuilder.Entity("ProfeTours.Server.Models.Venta", b =>
+                {
+                    b.HasOne("Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("IdCliente")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Paquete", "Paquete")
+                        .WithMany()
+                        .HasForeignKey("IdPaquete")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Paquete");
+                });
+
+            modelBuilder.Entity("ProfeTours.Server.Models.Tiporole", b =>
+                {
+                    b.Navigation("Usuarios");
                 });
 #pragma warning restore 612, 618
         }

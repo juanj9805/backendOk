@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProfeTours.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+896dc5c506064beb0d080fe90cfed486174f28e2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ba905616fc75bfa95c041be1e86400e02bf50e93")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProfeTours.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProfeTours.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

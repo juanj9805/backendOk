@@ -12,12 +12,16 @@ namespace ProfeTours.Server.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdUsuario { get; set; }
-        public int IdTipoDocumento { get; set; }
         public string NumeroDocumento { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public string Correo { get; set; }
         public string Contrasena { get; set; }
+
+        public int IdTipoRole { get; set; }
+
+        public Tiporole Tiporole{ get; set; }
+        public int IdTipoDocumento { get; set; }
 
         public Tipodocumento Tipodocumento { get; set; }
     }

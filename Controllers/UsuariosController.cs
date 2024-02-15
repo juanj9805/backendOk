@@ -56,6 +56,8 @@ namespace ProfeTours.Server.Controllers
                 usuario.Nombre,
                 usuario.Apellido,
                 usuario.Correo,
+                usuario.IdTipoDocumento,
+                usuario.IdTipoRole
                 // Otros campos que quieras devolver
             };
 
