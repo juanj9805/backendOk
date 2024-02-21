@@ -23,6 +23,10 @@ namespace ProfeTours.Server.Models
         // Propiedades de navegación
         public Cliente Cliente { get; set; }
         public Paquete Paquete { get; set; }
+
+        // nueva modificación
+
+        public string Estado { get; set; }
    
 }
 }
