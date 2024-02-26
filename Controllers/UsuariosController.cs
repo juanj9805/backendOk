@@ -105,9 +105,10 @@ namespace ProfeTours.Server.Controllers
                 var nuevoUsuario = new Usuario
                 {
                     IdTipoDocumento = nuevoUsuarioViewModel.IdTipoDocumento,
+                    IdTipoRole = nuevoUsuarioViewModel.IdTipoRole,
                     NumeroDocumento = nuevoUsuarioViewModel.NumeroDocumento,
                     Nombre = nuevoUsuarioViewModel.Nombres,
-                    Apellido = nuevoUsuarioViewModel.Apellidos,
+                    Apellido = nuevoUsuarioViewModel.Apellido,
                     Correo = nuevoUsuarioViewModel.Correo,
                     Contrasena = nuevoUsuarioViewModel.Contrasena
                 };
